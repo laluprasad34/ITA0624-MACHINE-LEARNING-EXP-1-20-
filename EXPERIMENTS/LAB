@@ -1,1 +1,36 @@
-LAB
+data(iris)
+
+# Random split
+set.seed(123)
+
+index <- sample(1:nrow(iris),
+                0.8*nrow(iris))
+
+train <- iris[index,]
+test <- iris[-index,]
+
+# Build logistic regression model
+model <- multinom(
+  Species ~ Petal.Length + Petal.Width,
+  data=train
+)
+
+# Install and load package
+# install.packages("nnet")
+library(nnet)
+
+# Predict
+pred <- predict(model, test)
+
+print(pred)
+
+# Confusion matrix
+print(table(
+  Actual=test$Species,
+  Predicted=pred
+))
+
+# Accuracy
+accuracy <- mean(pred == test$Species)
+
+print(accuracy)
